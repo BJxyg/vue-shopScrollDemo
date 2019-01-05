@@ -14,7 +14,7 @@
                 <em>{{item.pPrice}}</em>
               </div>
               <div class="pd_old_price">
-                <del>{{item.pcpPrice}}</del>
+                <del v-if="item.pcpPrice!=''">￥{{item.pcpPrice}}</del>
               </div>
             </div>
           </div>
@@ -22,64 +22,104 @@
       </li>
     </ul>
     <div :class="showToTop==true?'goto_top':''" @click="gotop"></div>
+    <div v-show="isEnd" class="botton_tip">到底啦,没有更多了</div>
   </div>
 </template>
 <script>
-
 export default {
   data() {
     return {
       shops: [],
-      showToTop: false
+      showToTop: false,
+      pageNum: 1,
+      isLoading: false,
+      isEnd: false
     };
   },
   methods: {
     getdata() {
+      this.isLoading = true;
       let self = this;
+      let callbackName = "jsonp" + self.pageNum;
+      let body = {
+        secondTabId: "00042920_12620761_t0;0_08201626__",
+        type: "0",
+        pageNum: self.pageNum,
+        ofn: "16",
+        passback:
+          '{"platform":"h5","moduleId":12620761,"subscript":"0","isFlexible":"0","priceFilter":"1","jdPrice":"1","showLongPic":"0","similar":"0"}',
+        mitemAddrId: "",
+        geo: { lng: "", lat: "" },
+        addressId: "",
+        posLng: "",
+        posLat: "",
+        focus: "",
+        innerAnchor: "",
+        mtm_source: "",
+        mtm_subsource: "",
+        USER_FLAG_CHECK: "",
+        sid: ""
+      };
+      body = JSON.stringify(body);
 
       $.ajax({
-        url:
-          "https://api.m.jd.com/client.action?functionId=getBabelProductPaged&body=%7B%22secondTabId%22%3A%2200042920_12620761_t0%3B0_08201626__%22%2C%22type%22%3A%220%22%2C%22pageNum%22%3A%221%22%2C%22ofn%22%3A%2216%22%2C%22passback%22%3A%22%7B%5C%22platform%5C%22%3A%5C%22h5%5C%22%2C%5C%22moduleId%5C%22%3A12620761%2C%5C%22subscript%5C%22%3A%5C%220%5C%22%2C%5C%22isFlexible%5C%22%3A%5C%220%5C%22%2C%5C%22priceFilter%5C%22%3A%5C%221%5C%22%2C%5C%22jdPrice%5C%22%3A%5C%221%5C%22%2C%5C%22showLongPic%5C%22%3A%5C%220%5C%22%2C%5C%22similar%5C%22%3A%5C%220%5C%22%7D%22%2C%22mitemAddrId%22%3A%22%22%2C%22geo%22%3A%7B%22lng%22%3A%22%22%2C%22lat%22%3A%22%22%7D%2C%22addressId%22%3A%22%22%2C%22posLng%22%3A%22%22%2C%22posLat%22%3A%22%22%2C%22focus%22%3A%22%22%2C%22innerAnchor%22%3A%22%22%2C%22mtm_source%22%3A%22%22%2C%22mtm_subsource%22%3A%22%22%2C%22USER_FLAG_CHECK%22%3A%22%22%2C%22sid%22%3A%22%22%7D&screen=750*1334&client=wh5&clientVersion=1.0.0&sid=&uuid=1132737184&area=&_=1546581595485&callback=jsonp2",
+        url: "https://api.m.jd.com/client.action",
         dataType: "jsonp",
-        jsonpCallback: "jsonp2",
+        jsonpCallback: callbackName,
         async: true,
+        data: {
+          functionId: "getBabelProductPaged",
+          body: body,
+          screen: "640 * 1136",
+          client: "wh5",
+          clientVersion: "1.0.0",
+          sid: "",
+          uuid: 15127937816521115366467,
+          area: "",
+          _: 1546609439580,
+          callback: callbackName
+        },
         success: function(res) {
-          if (res.waresPagedList) {
+          if (res.waresPagedList.length > 0) {
             self.shops = self.shops.concat(res.waresPagedList);
+            self.pageNum++;
+          } else {
+            self.isEnd = true;
           }
+          self.isLoading = false;
         },
         error: function(err) {
-          console.log(err);
+          self.isLoading = false;
+          console.log(err);  
         }
       });
     },
     scroll() {
+      let offHeith =
+        document.documentElement.offsetHeight -
+        document.documentElement.scrollTop -
+        window.innerHeight;
+      if (offHeith <= 200 && !this.isLoading && !this.isEnd) {
+        this.getdata();
+      }
+
+      if (document.documentElement.scrollTop > window.innerHeight) {
+        this.showToTop = true;
+      } else {
+        this.showToTop = false;
+      }
+
       // console.log("*****************************");
       // console.log(document.documentElement.offsetHeight);
       // console.log(document.documentElement.scrollTop);
       // console.log(window.innerHeight);
       // console.log(document.documentElement.offsetHeight - document.documentElement.scrollTop - window.innerHeight)
       // console.log("*****************************");
-
-      let offHeith =
-        document.documentElement.offsetHeight -
-        document.documentElement.scrollTop -
-        window.innerHeight;
-      if (offHeith <= 200) {
-        this.getdata();
-      }
-
-      if (document.documentElement.scrollTop > 100) {
-        this.showToTop = true;
-      } else {
-        this.showToTop = false;
-      }
     },
     gotop() {
       document.documentElement.scrollTop = 0;
     }
   },
-  created() {},
   mounted: function() {
     this.getdata();
     window.addEventListener("scroll", this.scroll);
@@ -191,5 +231,14 @@ ul {
   background-position: 50% 50%;
   background-size: 100%;
   bottom: 60px;
+}
+
+.botton_tip {
+  width: 100%;
+  height: 30px;
+  bottom: 30px;
+  display: flex;
+  z-index: 999;
+  background-color: rgb(173, 173, 173);
 }
 </style>
