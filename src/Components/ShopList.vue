@@ -133,45 +133,45 @@ em {
 }
 
 ul {
-  padding: 5px 10px 0px 10px;
+  padding: .05rem .1rem 0 .1rem;
 
   li {
     background-color: rgb(246, 60, 86);
     list-style: none;
     float: left;
     width: 50%;
-    padding-bottom: 5px;
+    padding-bottom: .05rem;
     &:nth-of-type(odd) {
       .content {
-        padding-right: 2.5px;
+        padding-right: .025rem;
         background-color: rgb(246, 60, 86);
       }
     }
     &:nth-of-type(even) {
       .content {
-        padding-left: 2.5px;
+        padding-left: .025rem;
         background-color: rgb(246, 60, 86);
       }
     }
     .content {
       background-color: rgb(255, 255, 255);
-      // height: 259px;
+      // height: 259rem;
       .intro {
         width: 100%;
         height: 100%;
         background-color: rgb(255, 255, 255);
 
         .pd_info {
-          margin-top: 6px;
-          padding: 0px 10px 0px 10px;
+          margin-top: .06rem;
+          padding: 0rem .10rem 0rem .10rem;
           color: rgb(43, 43, 43);
           font-family: "Microsoft YaHei,Verdana,Arial,Helvetica,sans-serif";
-          font-size: 13px;
-          line-height: 17px;
-          height: 34px;
+          font-size: .13rem;
+          line-height: .17rem;
+          height: .34rem;
           // text-overflow: ellipsis;
           p {
-            margin: 0px;
+            margin: 0rem;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -181,12 +181,12 @@ ul {
         }
         .price {
           bottom: 0;
-          margin-top: 20px;
-          padding: 0px 10px 0px 10px;
+          margin-top: .20rem;
+          padding: 0rem .10rem 0rem .10rem;
 
           span {
-            padding: 0px;
-            margin: 0px;
+            padding: 0rem;
+            margin: 0rem;
           }
 
           div {
@@ -194,20 +194,20 @@ ul {
           }
 
           .pd_now_price {
-            margin-right: 3px;
-            font-size: 0px;
+            margin-right: .03rem;
+            font-size: 0rem;
             color: rgb(0, 0, 0);
 
             span {
-              font-size: 12px;
+              font-size: .12rem;
             }
             em {
-              font-size: 15px;
+              font-size: .15rem;
             }
           }
 
           .pd_old_price {
-            font-size: 12px;
+            font-size: .12rem;
             color: rgb(173, 173, 173);
           }
         }
@@ -221,22 +221,22 @@ ul {
 }
 
 .goto_top {
-  right: 10px;
-  width: 45px;
-  height: 45px;
+  right: .10rem;
+  width: .45rem;
+  height: .45rem;
   background-image: url("../img/top.png");
   position: fixed;
   z-index: 999;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 100%;
-  bottom: 60px;
+  bottom: .60rem;
 }
 
 .botton_tip {
   width: 100%;
-  height: 30px;
-  bottom: 30px;
+  height: .30rem;
+  bottom: .30rem;
   display: flex;
   z-index: 999;
   background-color: rgb(173, 173, 173);
